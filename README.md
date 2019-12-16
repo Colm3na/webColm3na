@@ -1,6 +1,6 @@
 # web Colm3na
 
-web de [CoworkingColmena](www.coworkingcolmena.com)
+Web para [ColmenaLabs_svq](https://www.colmenalabs.org/)
 
 Código `HTML`, `CSS`, `JS`, fuentes, imágenes y todo lo necesario para la web del coworking Colmena.
 
