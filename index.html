@@ -12,13 +12,13 @@
         <link href='https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.css' rel='stylesheet' />
     </head>
 
-    <div id='map' style='width: 400px; height: 300px;'></div>
+    <div id='mapbox' style='width: 400px; height: 300px;'></div>
 
     <!--mapboxgl.accessToken = 'pk.eyJ1Ijoid2ltZWwiLCJhIjoiY2s0OG4ya3ljMDNrNjNlcGJ3cm1lYXZhYSJ9.BE4z_jw3JSI0yv8Q4TxWpg'-->
     <script>
             mapboxgl.accessToken = 'pk.eyJ1Ijoid2ltZWwiLCJhIjoiY2s0OG4ya3ljMDNrNjNlcGJ3cm1lYXZhYSJ9.BE4z_jw3JSI0yv8Q4TxWpg';
-        var map = new mapboxgl.Map({
-        container: 'map',
+        var mapbox = new mapboxgl.Map({
+        container: 'mapbox',
         style: 'mapbox://styles/mapbox/streets-v11',
         center: [-6.06, 37.37],
         /*Coord Colmena:
@@ -27,9 +27,9 @@
         zoom: 11.15
         });
          
-        map.on('load', function() {
+        mapbox.on('load', function() {
         // Add a layer showing the places.
-        map.addLayer({
+        mapbox.addLayer({
         'id': 'places',
         'type': 'symbol',
         'source': {
@@ -90,7 +90,7 @@
          
         // When a click event occurs on a feature in the places layer, open a popup at the
         // location of the feature, with description HTML from its properties.
-        map.on('click', 'places', function(e) {
+        mapbox.on('click', 'places', function(e) {
         var coordinates = e.features[0].geometry.coordinates.slice();
         var description = e.features[0].properties.description;
          
@@ -104,17 +104,17 @@
         new mapboxgl.Popup()
         .setLngLat(coordinates)
         .setHTML(description)
-        .addTo(map);
+        .addTo(mapbox);
         });
          
         // Change the cursor to a pointer when the mouse is over the places layer.
-        map.on('mouseenter', 'places', function() {
-        map.getCanvas().style.cursor = 'pointer';
+        mapbox.on('mouseenter', 'places', function() {
+            mapbox.getCanvas().style.cursor = 'pointer';
         });
          
         // Change it back to a pointer when it leaves.
-        map.on('mouseleave', 'places', function() {
-        map.getCanvas().style.cursor = '';
+        mapbox.on('mouseleave', 'places', function() {
+            mapbox.getCanvas().style.cursor = '';
         });
         });
         </script>        
