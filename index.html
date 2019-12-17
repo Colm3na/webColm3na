@@ -546,6 +546,8 @@
             mapbox.getCanvas().style.cursor = '';
         });
         });
+        // Add zoom and rotation controls to the map.
+        mapbox.addControl(new mapboxgl.NavigationControl());
         </script>
     </body>
 </html>
