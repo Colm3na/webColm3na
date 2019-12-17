@@ -17,6 +17,9 @@
         <link href="assets/css/magnific-popup.css" rel="stylesheet">
         <link href="assets/css/style.css" rel="stylesheet">
         <link href="assets/css/responsive.css" rel="stylesheet">
+        <!--Map-->
+        <script src='https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.js'></script>
+        <link href='https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.css' rel='stylesheet' />
     </head>
     <body>
         <div class="preloader">
@@ -357,7 +360,7 @@
                         </div>
                     </div>
                     <div class="col-md-6 col-sm-12">
-                        <div class="map"></div>
+                        <div id="mapbox" class="mapbox"></div>
                     </div>
                 </div>
             </div>
@@ -439,8 +442,110 @@
         <script src="assets/js/jquery.easing.1.3.js"></script>
         <script src="assets/js/jquery.counterup.min.js"></script>
         <script src="assets/js/jquery.magnific-popup.min.js"></script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyChJoxGL2coqWo3NdVla4EFmaKP6KXtxI0"></script>
-        <script src="assets/js/gmap3.min.js"></script>
         <script src="assets/js/scripts.js"></script>
+        <!--openMap-->
+        <script>
+            mapboxgl.accessToken = 'pk.eyJ1Ijoid2ltZWwiLCJhIjoiY2s0OG4ya3ljMDNrNjNlcGJ3cm1lYXZhYSJ9.BE4z_jw3JSI0yv8Q4TxWpg';
+        var mapbox = new mapboxgl.Map({
+        container: 'mapbox',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [-6.06, 37.37],
+        /*Coord Colmena:
+            -6.0698055000000295, 37.3793385
+        */
+        zoom: 11.15
+        });
+         
+        mapbox.on('load', function() {
+        // Add a layer showing the places.
+        mapbox.addLayer({
+        'id': 'places',
+        'type': 'symbol',
+        'source': {
+        'type': 'geojson',
+        'data': {
+        'type': 'FeatureCollection',
+        'features': [
+        {
+        'type': 'Feature',
+        'properties': {
+        'description':
+        '<strong>ColmenaLabs_svq</strong><p><a href="https://www.colmenalabs.org/" target="_blank" title="Nueva ventana">ColmenaLabs</a> es un espacio abierto centrado en la tecnología blockchain para makers, DevOps, desarrolladores web3.0...</p>',
+        'icon': 'rocket'
+        },
+        'geometry': {
+        'type': 'Point',
+        'coordinates': [-6.0698055000000295, 37.3793385]
+        }
+        },
+
+        {
+        'type': 'Feature',
+        'properties': {
+        'description':
+        '<strong><a href="https://www.metro-sevilla.es/es/linea-1" target="_blank" title="Nueva ventana">Estacion de metro de San Juan Alto</a></strong><p> es una de las paradas mas cercanas a la Colmena</p>',
+        'icon': 'car'
+        },
+        'geometry': {
+        'type': 'Point',
+        /*Coor Metro:
+        37.361574, -6.038411 
+        */
+        'coordinates': [-6.038411, 37.361574]
+        }
+        }
+        /*
+        {
+        'type': 'Feature',
+        'properties': {
+        'description':
+        '<strong>nota1</strong><p>nota2<a href="http://tallulaeatbar.ticketleap.com/2012beachblanket/" target="_blank" title="Nueva ventana">enlace1</a> nota3.</p>',
+        'icon': 'bar'
+        },
+        'geometry': {
+        'type': 'Point',
+        'coordinates': [-77.090372, 38.881189]
+        }
+        },
+        */
+        ]
+        }
+        },
+        'layout': {
+        'icon-image': '{icon}-15',
+        'icon-allow-overlap': true
+        }
+        });
+         
+        // When a click event occurs on a feature in the places layer, open a popup at the
+        // location of the feature, with description HTML from its properties.
+        mapbox.on('click', 'places', function(e) {
+        var coordinates = e.features[0].geometry.coordinates.slice();
+        var description = e.features[0].properties.description;
+         
+        // Ensure that if the map is zoomed out such that multiple
+        // copies of the feature are visible, the popup appears
+        // over the copy being pointed to.
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+        }
+         
+        new mapboxgl.Popup()
+        .setLngLat(coordinates)
+        .setHTML(description)
+        .addTo(mapbox);
+        });
+         
+        // Change the cursor to a pointer when the mouse is over the places layer.
+        mapbox.on('mouseenter', 'places', function() {
+            mapbox.getCanvas().style.cursor = 'pointer';
+        });
+         
+        // Change it back to a pointer when it leaves.
+        mapbox.on('mouseleave', 'places', function() {
+            mapbox.getCanvas().style.cursor = '';
+        });
+        });
+        </script>
     </body>
 </html>
